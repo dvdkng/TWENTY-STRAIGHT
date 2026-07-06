@@ -1,0 +1,127 @@
+{
+  "playerState": {
+    "balance": 0,
+    "totalFlips": 0,
+    "headsFlipped": 0,
+    "streak": 0,
+    "maxStreak": 0,
+    "upgrades": {
+      "coinWorthLevel": 1,
+      "headChanceLevel": 1,
+      "autoFlipperLevel": 0,
+      "b2bBonusLevel": 0
+    },
+    "perksUnlocked": {
+      "luckyCharm": false,
+      "heavyTails": false
+    },
+    "abilities": {
+      "midasTouchReady": true,
+      "timeWarpReady": true
+    }
+  },
+  "gameConfig": {
+    "baseSettings": {
+      "baseCoinWorth": 0.01,
+      "baseHeadChance": 0.35
+    },
+    "upgrades": {
+      "coinWorth": {
+        "id": "coinWorth",
+        "name": "Upgrade Coin",
+        "basePrice": 0.15,
+        "priceMultiplier": 3.5,
+        "tiers": [
+          {
+            "name": "Penny",
+            "worth": 0.01
+          },
+          {
+            "name": "Nickel",
+            "worth": 0.05
+          },
+          {
+            "name": "Dime",
+            "worth": 0.15
+          },
+          {
+            "name": "Quarter",
+            "worth": 0.40
+          },
+          {
+            "name": "Half Dollar",
+            "worth": 1.00
+          },
+          {
+            "name": "Silver Dollar",
+            "worth": 2.50
+          },
+          {
+            "name": "Gold Doubloon",
+            "worth": 6.00
+          },
+          {
+            "name": "Platinum Chip",
+            "worth": 15.00
+          },
+          {
+            "name": "Diamond Core",
+            "worth": 40.00
+          },
+          {
+            "name": "Antimatter Token",
+            "worth": 100.00
+          }
+        ]
+      },
+      "headChance": {
+        "id": "headChance",
+        "name": "Weighted Coin",
+        "basePrice": 0.15,
+        "priceMultiplier": 1.40,
+        "chanceIncreasePerLevel": 0.01,
+        "maxChance": 0.85
+      },
+      "autoFlipper": {
+        "id": "autoFlipper",
+        "name": "Mechanical Finger",
+        "basePrice": 0.50,
+        "priceMultiplier": 2.5,
+        "flipsPerSecondPerLevel": 1
+      },
+      "b2bBonus": {
+        "id": "b2bBonus",
+        "name": "B2B Multiplier",
+        "basePrice": 1.00,
+        "priceMultiplier": 2.0,
+        "multiplierPerLevel": 0.15
+      }
+    },
+    "perks": {
+      "luckyCharm": {
+        "id": "luckyCharm",
+        "name": "Lucky Charm",
+        "price": 50.00,
+        "chanceIncrease": 0.03,
+        "description": "Increases base head chance by a flat 3%."
+      },
+      "heavyTails": {
+        "id": "heavyTails",
+        "name": "Heavy Tails",
+        "price": 25.00,
+        "pityMultiplier": 0.25,
+        "description": "Tails gives 25% of current coin value."
+      }
+    },
+    "abilities": {
+      "midasTouch": {
+        "id": "midasTouch",
+        "name": "Midas Touch",
+        "unlockPrice": 75.00,
+        "cooldownSeconds": 300,
+        "guaranteedFlips": 5,
+        "effect": "Guarantees the next 5 flips are Heads."
+      }
+    }
+  }
+}
