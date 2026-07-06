@@ -80,6 +80,37 @@ function play8BitSound(type) {
   }
 }
 
+function triggerCoinFlip() {
+  if (isFlipping) return;
+  if (document.body.classList.contains("hidden")) document.body.classList.remove("hidden");
+
+  play8BitSound('jump');
+  const result = game.flip();
+
+  let flipSpeedMs = 1800;
+  const speedLevel = game.playerState.upgrades.autoFlipperLevel;
+  if (speedLevel > 0) {
+    flipSpeedMs = Math.max(300, 1800 - (speedLevel * 150));
+  }
+
+  playFlipAnimation(result, flipSpeedMs, () => {
+    pushLog(result.isHeads ? 'HEADS' : 'TAILS');
+    updateUI();
+    flipButton.disabled = false;
+
+    if (result.isHeads) {
+      play8BitSound('land-win');
+    } else {
+      play8BitSound('land-lose');
+    }
+
+    if (result.gameWon) {
+      play8BitSound('victory');
+      alert('MAXIMUM WIN STREAK! YOU BEAT THE MACHINE!');
+    }
+  });
+}
+
 async function initGame() {
   try {
     const response = await fetch('./game/data.json');
@@ -140,35 +171,23 @@ async function initGame() {
       statsModal.classList.add('modal-hidden');
     });
 
-    flipButton.addEventListener('click', () => {
-      if (isFlipping) return;
-      if (document.body.classList.contains("hidden")) document.body.classList.remove("hidden")
+    // Click listener
+    flipButton.addEventListener('click', triggerCoinFlip);
 
-      play8BitSound('jump');
-      const result = game.flip();
+    // Keyboard listener for Spacebar
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        // Prevent default browser actions (like scrolling down the page)
+        e.preventDefault();
 
-      let flipSpeedMs = 1800;
-      const speedLevel = game.playerState.upgrades.autoFlipperLevel;
-      if (speedLevel > 0) {
-        flipSpeedMs = Math.max(300, 1800 - (speedLevel * 150));
+        // Only allow flipping if the shop UI and stats UI are closed
+        const isShopOpen = !shopPageView.classList.contains('page-hidden');
+        const isStatsOpen = !statsModal.classList.contains('modal-hidden');
+
+        if (!isShopOpen && !isStatsOpen) {
+          triggerCoinFlip();
+        }
       }
-
-      playFlipAnimation(result, flipSpeedMs, () => {
-        pushLog(result.isHeads ? 'HEADS' : 'TAILS');
-        updateUI();
-        flipButton.disabled = false;
-
-        if (result.isHeads) {
-          play8BitSound('land-win');
-        } else {
-          play8BitSound('land-lose');
-        }
-
-        if (result.gameWon) {
-          play8BitSound('victory');
-          alert('MAXIMUM WIN STREAK! YOU BEAT THE MACHINE!');
-        }
-      });
     });
 
   } catch (error) {
@@ -225,14 +244,16 @@ function buildShopUI(upgrades) {
     tooltipDiv.id = `tooltip-${upgrade.id}`;
     tooltipDiv.className = 'retro-tooltip';
 
-    buyBtn.addEventListener('click', () => {
+    const handleFlip = () => {
       if (game.buyUpgrade(upgrade.id)) {
         play8BitSound('buy');
         updateUI();
       } else {
         play8BitSound('error');
       }
-    });
+    }
+
+    buyBtn.addEventListener('click', handleFlip);
 
     itemDiv.addEventListener('mousemove', (e) => {
       const rect = itemDiv.getBoundingClientRect();
